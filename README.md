@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Herbal Essentials Pro
 
-## Getting Started
+A clean rebuild of herbalessentialspro.com. It replaces the compromised WordPress site with:
 
-First, run the development server:
+- **Next.js 15** (App Router) and **Tailwind CSS v4**
+- **Neon Postgres** through **Drizzle ORM**
+- **Better Auth** (email and password) for the admin area
+
+## What came from the October 19, 2026 backup
+
+- The brand palette and fonts (Poppins, Bad Script) from the Elementor kit
+- The post slugs, so old URLs keep working (`/chamomile-tea-benefits`, and so on)
+- About 155 images from the old posts, in `public/uploads/`, at the same paths as before. Each one was checked to be a real image with no embedded PHP or script.
+
+Nothing executable was carried over. The database was missing, so the article text in `content/posts/` was **newly written** for the original topics.
+
+## Local setup
 
 ```bash
+cp .env.example .env    # fill in DATABASE_URL, BETTER_AUTH_SECRET, ADMIN_EMAILS
+npm install
+npm run db:push         # create tables in Neon
+npm run db:seed         # load categories + the 20 posts from content/posts
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+To manage content, go to `/sign-in`, choose **Create the admin account** with an email listed in `ADMIN_EMAILS`, and then use `/admin`.
+Sign-up is closed to every other email unless `ALLOW_SIGNUP=true`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Routing notes (`src/middleware.ts`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/YYYY/MM/DD/slug` redirects with a 301 to `/slug`, which was the old WordPress date permalink.
+- `/hint/*`, `/humanityinternational/*`, `/wp-*` and any `*.php` path return **410 Gone**, so search engines drop the old phishing and spam URLs.
 
-## Learn More
+## Deploying (Vercel)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Import the repo and set `DATABASE_URL`, `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` (your domain), `ADMIN_EMAILS` and `NEXT_PUBLIC_SITE_URL`.
+2. Run `npm run db:push && npm run db:seed` once against the Neon database.
+3. Before pointing DNS at the new site, rotate any credentials from the old host (DB, FTP/cPanel, WordPress admins), because the old server was compromised.

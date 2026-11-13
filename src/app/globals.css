@@ -1,26 +1,39 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* Brand palette carried over from the original Elementor kit */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-ink: #1b1b1b;
+  --color-slate: #54595f;
+  --color-muted: #6b6b6b;
+  --color-leaf: #236622;
+  --color-leaf-bright: #1ba865;
+  --color-mint: #88ffc7;
+  --color-mist: #ececec;
+  --color-cream: #f7f8f3;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-script: var(--font-bad-script), cursive;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #f7f8f3;
+  color: #1b1b1b;
 }
+
+/* Article typography */
+.prose-herbal { line-height: 1.8; font-size: 1.0625rem; color: #2b2b2b; }
+.prose-herbal h2 { font-size: 1.5rem; font-weight: 600; margin: 2.25rem 0 0.75rem; color: var(--hp-leaf); }
+.prose-herbal h3 { font-size: 1.2rem; font-weight: 600; margin: 1.75rem 0 0.5rem; }
+.prose-herbal p { margin: 1rem 0; }
+.prose-herbal ul, .prose-herbal ol { margin: 1rem 0; padding-left: 1.4rem; }
+.prose-herbal ul { list-style: disc; }
+.prose-herbal ol { list-style: decimal; }
+.prose-herbal li { margin: 0.35rem 0; }
+.prose-herbal a { color: var(--hp-leaf); text-decoration: underline; text-underline-offset: 3px; }
+.prose-herbal img { border-radius: 1rem; margin: 2rem 0; width: 100%; height: auto; max-height: 26rem; object-fit: cover; }
+.prose-herbal table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.95rem; }
+.prose-herbal th, .prose-herbal td { border-bottom: 1px solid var(--hp-mist); padding: 0.6rem 0.5rem; text-align: left; }
+.prose-herbal th { background: #eef5ec; font-weight: 600; }
+.prose-herbal em:last-child { color: var(--hp-muted); }
+.prose-herbal strong { color: #1b1b1b; }
+
+:root { --hp-leaf: #236622; --hp-mist: #ececec; --hp-muted: #6b6b6b; --hp-ink: #1b1b1b; }
