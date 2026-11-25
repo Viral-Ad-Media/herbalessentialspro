@@ -7,7 +7,8 @@ import { formatDate, readingTime } from "@/lib/format";
 import { renderMarkdown } from "@/lib/markdown";
 import { getPostBySlug, getPostsByCategory } from "@/lib/posts";
 
-export const revalidate = 300;
+// Rendered per request: content lives in the database, which may not be reachable at build time.
+export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

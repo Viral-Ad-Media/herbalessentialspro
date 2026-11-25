@@ -10,7 +10,21 @@ const adminEmails = (process.env.ADMIN_EMAILS ?? "")
   .map((e) => e.trim().toLowerCase())
   .filter(Boolean);
 
+// On Vercel, fall back to the URLs it provides when BETTER_AUTH_URL isn't set.
+const vercelUrl = (host?: string) => (host ? `https://${host}` : undefined);
+const baseURL =
+  process.env.BETTER_AUTH_URL ?? vercelUrl(process.env.VERCEL_PROJECT_PRODUCTION_URL);
+const trustedOrigins = [
+  process.env.BETTER_AUTH_URL,
+  vercelUrl(process.env.VERCEL_PROJECT_PRODUCTION_URL),
+  vercelUrl(process.env.VERCEL_URL),
+  vercelUrl(process.env.VERCEL_BRANCH_URL),
+].filter((o): o is string => Boolean(o));
+
 export const auth = betterAuth({
+  secret: process.env.BETTER_AUTH_SECRET,
+  baseURL,
+  trustedOrigins,
   database: drizzleAdapter(db, { provider: "pg", schema }),
   emailAndPassword: {
     enabled: true,
