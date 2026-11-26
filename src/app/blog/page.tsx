@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { PostCard } from "@/components/post-card";
 import { getPublishedPosts } from "@/lib/posts";
 
-export const revalidate = 300;
+// Rendered per request: content lives in the database, which may not be reachable at build time.
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Blog", description: "All articles on herbal teas and natural wellness." };
 
 export default async function BlogPage() {

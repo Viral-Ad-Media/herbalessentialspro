@@ -3,7 +3,8 @@ import Link from "next/link";
 import { PostCard } from "@/components/post-card";
 import { getCategories, getPublishedPosts } from "@/lib/posts";
 
-export const revalidate = 300;
+// Rendered per request: content lives in the database, which may not be reachable at build time.
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const [posts, categories] = await Promise.all([getPublishedPosts(7), getCategories()]);
